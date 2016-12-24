@@ -34,9 +34,48 @@ public class ScrapeData {
         ChromeDriver driver = new ChromeDriver(capabilities);
         driver.manage().window().maximize();
 
+        driver.get("https://www.amazon.com");
+        WebElement element1 = driver.findElement(By.xpath("//*[@id=\"nav-link-shopall\"]"));
+        Actions actions1 = new Actions(driver);
+        actions1.moveToElement(element1);
+        actions1.click();
+
         // And now use this to visit Google
         //driver.get("http://denvycom.com/blog/");
-        driver.get("https://www.amazon.com/s/ref=sr_pg_2?rh=n%3A7141123011%2Cn%3A7147445011%2Cn%3A12035955011%2Cp_6%3AATVPDKIKX0DER&page=3&bbn=12035955011&hidden-keywords=ORCA&ie=UTF8&qid=1482475994");
+//        int page = 0;
+//        for ( int i = 1; i < 4; i++ ) {
+//            page = i;
+//            int last = (47*i) + i;
+//            int first = last - 48 ;
+//            try {
+//                Thread.sleep(10000);//1000 milliseconds is one second.
+//                driver.get("https://www.amazon.com/s/ref=sr_pg_2?rh=n%3A7141123011%2Cn%3A7147445011%2Cn%3A12035955011%2Cp_6%3AATVPDKIKX0DER&page="+ page +"&bbn=12035955011&hidden-keywords=ORCA&ie=UTF8&qid=1482475994");
+//                System.out.println( "current page : " + page ) ;
+//                System.out.println( "current first : " + first ) ;
+//                System.out.println( "current last : " + (last - 1) ) ;
+//                for (int j = 1; j < 5; j++ ) {
+//                    try {
+//                        Thread.sleep(2000);//1000 milliseconds is one second.
+//                        //jse.executeScript("window.scrollBy(0,1200)", "");
+//                        //move to the target item on the screen
+//                        int current = first;
+//                        int tmp = (j * 11) + 1;
+//                        current += tmp;
+//                        System.out.println( current ) ;
+//                        WebElement element = driver.findElement(By.xpath("//*[@id=\"result_" +current+ "\"]/div/div[4]/div[2]/span"));
+//                        Actions actions = new Actions(driver);
+//                        actions.moveToElement(element);
+//                        // actions.click();
+//                        actions.perform();
+//                    } catch (InterruptedException ex) {
+//                        Thread.currentThread().interrupt();
+//                    }
+//                }
+//
+//            } catch (InterruptedException ex) {
+//                Thread.currentThread().interrupt();
+//            }
+//        }
         // Alternatively the same thing can be done like this
         // driver.navigate().to("http://www.google.com");
 
@@ -60,36 +99,39 @@ public class ScrapeData {
 //            }
 //        }
 
-//        for (int i = 96; i <= 143; i++ ) {
-//            String rank = "";
-//
-//            String branch = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[2]/div/a/span")).getText();
-//            String title = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[3]/div[1]/a/h2")).getText();
-//            String price = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[3]/div[2]/a/span")).getText();
-//            if (driver.findElements(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[4]/div[1]/span")).size() > 0) {
-//                rank = driver.findElement(By.xpath("//*[@id=\"result_" + i + "\"]/div/div[4]/div[1]/span")).getText();
-//            }
-//            String asin = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[4]/div[2]/span")).getText();
-//
-//            System.out.println(branch);
-//            System.out.println(title);
-//            System.out.println(price);
-//            System.out.println(rank);
-//            System.out.println(asin);
-//
-//        }
-        String branch =  "MILKYWAY TEE";
-        String title = "Is My Bike Okay? T-Shirt Cycling, BMX, Mountain Cyclists";
-        String price = "$15.99";
-        String rank = "#370,561";
-        String asin = "ASIN: B01MTWJSRT";
+        driver.get("https://www.amazon.com/s/ref=sr_pg_2?rh=n%3A7141123011%2Cn%3A7147445011%2Cn%3A12035955011%2Cp_6%3AATVPDKIKX0DER&page=3&bbn=12035955011&hidden-keywords=ORCA&ie=UTF8&qid=1482475994");
+        for (int i = 96; i <= 143; i++ ) {
+            String rank = "";
 
-        System.out.println(branch);
-        System.out.println(title);
-        System.out.println(Float.parseFloat(price.substring(1, price.length())));
-        String saleRank = rank.replace(',','.');
-        System.out.println(Float.parseFloat(saleRank.substring(1, saleRank.length())));
-        System.out.println(asin);
+            String branch = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[2]/div/a/span")).getText();
+            String title = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[3]/div[1]/a/h2")).getText();
+            String price = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[3]/div[2]/a/span")).getText();
+            if (driver.findElements(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[4]/div[1]/span")).size() > 0) {
+                rank = driver.findElement(By.xpath("//*[@id=\"result_" + i + "\"]/div/div[4]/div[1]/span")).getText();
+            }
+            String asin = driver.findElement(By.xpath("//*[@id=\"result_"+ i +"\"]/div/div[4]/div[2]/span")).getText();
+            String image = driver.findElement(By.xpath("//*[@id=\"rot-"+ asin.substring(6, 16) +"\"]/div/a/div[1]/img")).getAttribute("src").toString();
+
+            System.out.println(branch);
+            System.out.println(title);
+            System.out.println(price);
+            System.out.println(rank);
+            System.out.println(asin);
+            System.out.println(image);
+
+        }
+//        String branch =  "MILKYWAY TEE";
+//        String title = "Is My Bike Okay? T-Shirt Cycling, BMX, Mountain Cyclists";
+//        String price = "$15.99";
+//        String rank = "#370,561";
+//        String asin = "ASIN: B01MTWJSRT";
+//
+//        System.out.println(branch);
+//        System.out.println(title);
+//        System.out.println(Float.parseFloat(price.substring(1, price.length())));
+//        String saleRank = rank.replace(',','.');
+//        System.out.println(Float.parseFloat(saleRank.substring(1, saleRank.length())));
+//        System.out.println(asin);
 
         //driver.get("https://www.amazon.com/s/ref=sr_pg_2?rh=n%3A7141123011%2Cn%3A7147445011%2Cn%3A12035955011%2Cp_6%3AATVPDKIKX0DER&page=13&bbn=12035955011&hidden-keywords=ORCA&ie=UTF8&qid=1482475994");
 
